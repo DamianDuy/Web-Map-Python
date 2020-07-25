@@ -1,5 +1,5 @@
 ID,NAME,COUNTRY,LAT,LON
 1,Brussels,Belgium,50.8505,4.3488
-2,Prague,Czech Republic,50.08804,14.42076
+2,Prague,Czech Republic,50.08804,14.420760000000001
 3,Antananarivo-Madagascar,Madagascar,-18.9137,47.5361
-4,Tokyo,Japan,35.652832,139.839478
+4,Tokyo,Japan,35.652832000000004,139.839478
