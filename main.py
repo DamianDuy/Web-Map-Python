@@ -29,15 +29,9 @@ def addMarkerVis(dataVisual):
     else:
         print("Coordinates must be numbers.")
         return dataVisual        
-    if ifFloat(rateTem):
-        rateTem = float(rateTem)
-    else:
-        print("Rate must be number.")
-        return dataVisual
-    if rateTem not in range (0,11):
-        print("Rate must be between 0 and 10.")
-        return dataVisual
-    rateTem = str(rateTem)
+    while not ifFloat(rateTem) or float(rateTem) not in range (0,11):
+        print("Rate must be a number between 0 and 10.")
+        rateTem = input("Rate the place out of 10: ")  
     rate = rateTem + "/10"    
     idVis = list(dataVisual["ID"])
     if not idVis:
@@ -75,21 +69,60 @@ def addMarkerUnvis(dataVisual):
                               "LON": [longitude]})
     return dataVisual.append(dfTem, ignore_index = True)
 
-def deleteMarker(dataVisual):
+def deleteMarker(dataVisual, id, ifShowMessage):
     ifExists = False
-    id = input("Give the ID of the place: ")
     if ifFloat(id):
         id = float(id)
-    else:
+    elif ifShowMessage:
         print("ID must be a number.")
         return dataVisual    
     for i in list(dataVisual["ID"]):
         if id == i:
             dataVisual.drop(dataVisual[dataVisual.ID == i].index, inplace = True)
             ifExists = True
-    if not ifExists:
+    if not ifExists and ifShowMessage:
         print("Position with the given ID does not exist.")
     return dataVisual
+
+def changeMarker(dataVisualVis, dataVisualUnvis, id):
+    ifExists = False
+    if ifFloat(id):
+        id = float(id)
+    else:
+        print("ID must be a number.")
+        return dataVisualVis
+    idVis = list(dataVisualVis["ID"])    
+    idUnvis = list(dataVisualUnvis["ID"])
+    nameUnvis = list(dataVisualUnvis["NAME"])
+    countryUnvis = list(dataVisualUnvis["COUNTRY"])
+    latitUnvis = list(dataVisualUnvis["LAT"])
+    longiUnvis = list(dataVisualUnvis["LON"])
+    if not idVis:
+        num = 1
+    else:
+        num = idVis[-1] + 1        
+    for i, nam, coun, lat, lon in zip(idUnvis, nameUnvis, countryUnvis, latitUnvis, longiUnvis):
+        if id == i:
+            newName = nam
+            newCountry = coun
+            newLatitude = lat
+            newLongitude = lon
+            ifExists = True
+    if not ifExists:
+        print("Position with the given ID does not exist.")
+        return dataVisualVis
+    rateTem = input("Rate the place out of 10: ")    
+    while not ifFloat(rateTem) or float(rateTem) not in range (0,11):
+        print("Rate must be a number between 0 and 10.")
+        rateTem = input("Rate the place out of 10: ")  
+    newRate = rateTem + "/10"    
+    dfTem = pandas.DataFrame({"ID" : [num],
+                              "NAME": [newName],
+                              "COUNTRY": [newCountry],
+                              "RATE": [newRate],
+                              "LAT": [newLatitude],
+                              "LON": [newLongitude]})
+    return dataVisualVis.append(dfTem, ignore_index = True)    
 
 def showMenu():
     print("1. Add marker to visited.")
@@ -113,14 +146,18 @@ while choice != "6":
         dataUnvis = addMarkerUnvis(dataUnvis)
         ifSaveUnvis = True
     elif choice == "3":
-        print("Changing")
+        id = input("Give ID of the place: ")
+        dataVis = changeMarker(dataVis, dataUnvis, id)
+        dataUnvis = deleteMarker(dataUnvis, id, False)
         ifSaveVis = True
         ifSaveUnvis = True
     elif choice == "4":
-        dataVis = deleteMarker(dataVis)
+        id = input("Give the ID of the place: ")
+        dataVis = deleteMarker(dataVis, id, True)
         ifSaveVis = True
     elif choice == "5":
-        dataUnvis = deleteMarker(dataUnvis)
+        id = input("Give the ID of the place: ")
+        dataUnvis = deleteMarker(dataUnvis, id, True)
         ifSaveUnvis = True
     elif choice != "6":
         print("No such option in the menu.")
