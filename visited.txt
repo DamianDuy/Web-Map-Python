@@ -3,3 +3,5 @@ ID,NAME,COUNTRY,RATE,LAT,LON
 2,Barcelona,Spain-Catalonia,8/10,41.390205,2.154007
 3,Berlin,Germany,6/10,52.520008,13.404954
 4,Malia-Kriti,Greece,9/10,35.2837,25.4626
+5,Warsaw,Poland,5/10,52.237049,21.017532
+6,Wroclaw,Poland,9/10,51.107883,17.038538

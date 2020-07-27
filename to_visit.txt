@@ -3,3 +3,5 @@ ID,NAME,COUNTRY,LAT,LON
 2,Prague,Czech Republic,50.08804,14.42076
 3,Antananarivo-Madagascar,Madagascar,-18.9137,47.5361
 4,Tokyo,Japan,35.65283200000001,139.839478
+5,Vienna,Austria,48.210033,16.363449
+6,London,UK,51.509865,-0.118092

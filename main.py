@@ -1,5 +1,6 @@
 import pandas
 from os import system, name
+import main
 
 dataVis = pandas.read_csv("visited.txt")
 dataUnvis = pandas.read_csv("to_visit.txt")
@@ -135,7 +136,7 @@ def showMenu():
 ifSaveVis = False
 ifSaveUnvis = False
 choice = "0"
-while choice != "6":
+while True:
     showMenu()
     choice = input()
     clear()
@@ -165,13 +166,17 @@ while choice != "6":
         quitMenu = input("Do you wish to save? Type yes/no: ")
         if quitMenu.lower() != "yes" and quitMenu.lower() != "no":
             choice = 0
+        elif quitMenu.lower() == "no":
+            exit(0)    
         elif quitMenu.lower() == "yes":
             print("Saving...")
             if ifSaveVis:
                 dataVis.to_csv("visited.txt", index = False, encoding = "utf-8")
             if ifSaveUnvis:
                 dataUnvis.to_csv("to_visit.txt", index = False, encoding = "utf-8")
-            input()                         
-    if choice != "6":    
+            if ifSaveVis or ifSaveUnvis:
+                exec(open("web_map.py").read())    
+            input()
+            exit(0)                           
         input()            
         clear()
