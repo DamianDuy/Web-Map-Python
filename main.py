@@ -56,46 +56,14 @@ class Data:
        self.dataVis = pandas.read_csv("visited.txt")
        self.dataUnvis = pandas.read_csv("to_visit.txt")
 
-    def addMarkerVis(self, dataVisual):
+    def addMarker(self, dataVisual, ifVis):
        print(Messages.giveNamePlace())
        name = input()
        print(Messages.giveNameCountry())
        country = input()
-       print(Messages.giveRate())
-       rateTem = input()
-       print(Messages.giveLat())
-       latitude = input()
-       print(Messages.giveLong())
-       longitude = input()
-       if ifFloat(latitude) and ifFloat(longitude):
-           latitude = float(latitude)
-           longitude = float(longitude)
-       else:
-           print(Messages.coorWrong())
-           return dataVisual        
-       while not ifFloat(rateTem) or float(rateTem) not in range (0,11):
-           print(Messages.rateWrong())
-           print(Messages.giveRate())
-           rateTem = input()  
-       rate = rateTem + "/10"    
-       idVis = list(dataVisual["ID"])
-       if not idVis:
-           i = 1
-       else:
-           i = idVis[-1] + 1        
-       dfTem = pandas.DataFrame({"ID" : [i],
-                                 "NAME": [name],
-                                 "COUNTRY": [country],
-                                 "RATE": [rate],
-                                 "LAT": [latitude],
-                                 "LON": [longitude]})
-       return dataVisual.append(dfTem, ignore_index = True)
-
-    def addMarkerUnvis(self, dataVisual):
-       print(Messages.giveNamePlace())
-       name = input()
-       print(Messages.giveNameCountry())
-       country = input()
+       if ifVis:
+          print(Messages.giveRate())
+          rateTem = input()
        print(Messages.giveLat())
        latitude = input()
        print(Messages.giveLong())
@@ -106,16 +74,32 @@ class Data:
        else:
            print(Messages.coorWrong())
            return dataVisual
-       idUnVis = list(dataVisual["ID"])
-       if not idUnVis:
+       if ifVis:            
+          while not ifFloat(rateTem) or float(rateTem) not in range (0,11):
+              print(Messages.rateWrong())
+              print(Messages.giveRate())
+              rateTem = input()
+       if ifVis:  
+          rate = rateTem + "/10"    
+       id = list(dataVisual["ID"])
+       if not id:
            i = 1
        else:
-           i = idUnVis[-1] + 1          
-       dfTem = pandas.DataFrame({"ID" : [i],
+           i = id[-1] + 1
+       if ifVis:
+           dfTem = pandas.DataFrame({"ID" : [i],
+                                    "NAME": [name],
+                                    "COUNTRY": [country],
+                                    "RATE": [rate],
+                                    "LAT": [latitude],
+                                    "LON": [longitude]})
+       else:
+           dfTem = pandas.DataFrame({"ID" : [i],
                               "NAME": [name],
                               "COUNTRY": [country],
                               "LAT": [latitude],
                               "LON": [longitude]})
+
        return dataVisual.append(dfTem, ignore_index = True)
 
     def deleteMarker(self, dataVisual, id, ifShowMessage):
@@ -198,10 +182,10 @@ def main():
        choice = input()
        clear()
        if choice == "1":
-           data.dataVis = data.addMarkerVis(data.dataVis)
+           data.dataVis = data.addMarker(data.dataVis, True)
            ifSaveVis = True
        elif choice == "2":
-           data.dataUnvis = data.addMarkerUnvis(data.dataUnvis)
+           data.dataUnvis = data.addMarker(data.dataUnvis, False)
            ifSaveUnvis = True
        elif choice == "3":
            print(Messages.giveId())
